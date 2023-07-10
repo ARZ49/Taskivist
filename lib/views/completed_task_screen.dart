@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:taskivist/custom_app_bar.dart';
-import 'package:taskivist/task_container.dart';
-import 'package:taskivist/utilities/app_colors.dart';
 
-class TaskScreen extends StatelessWidget {
-  const TaskScreen({super.key});
+import '../task_container.dart';
+
+class CompletedTaskScreen extends StatelessWidget {
+  const CompletedTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: AppColors.accentColor,
-          child: const Icon(
-            Icons.add,
-            color: AppColors.secondaryColor,
-            size: 30,
-          ),
-        ),
-        body: CustomScrollView(
-          slivers: [
-          const CustomAppBar(),
-            SliverList(
+      body: CustomScrollView(slivers: [
+        const CustomAppBar(),
+         SliverList(
                 delegate: SliverChildListDelegate([
               const SizedBox(
                 height: 10,
@@ -33,7 +23,7 @@ class TaskScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Task List',
+                      'Completed',
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           decoration: TextDecoration.underline,
                           decorationStyle: TextDecorationStyle.solid,
@@ -46,14 +36,14 @@ class TaskScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const TaskContainer(),
               const TaskContainer(isCompleted: true,),
-              const TaskContainer(),
               const TaskContainer(isCompleted: true,),
-              const TaskContainer(),
+              const TaskContainer(isCompleted: true,),
+              const TaskContainer(isCompleted: true,),
+              const TaskContainer(isCompleted: true,),
               const SizedBox(height: 5,),
             ]))
-          ],
-        ));
+      ]),
+    );
   }
 }
