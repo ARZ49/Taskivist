@@ -3,8 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:taskivist/utilities/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
-
+   CustomAppBar({super.key, required this.searchController, required this.onSubmitted});
+   final TextEditingController searchController;
+   final Function(String) onSubmitted;
   @override
   Widget build(BuildContext context) {
     return   SliverAppBar(
@@ -19,6 +20,7 @@ class CustomAppBar extends StatelessWidget {
                   width: 300,
                   height: 35,
                   child: TextField(
+                    controller: searchController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
@@ -42,6 +44,7 @@ class CustomAppBar extends StatelessWidget {
                         fillColor: AppColors.secondaryColor,
                         filled: true),
                     cursorColor: AppColors.accentColor,
+                    onSubmitted: onSubmitted,
                   ),
                 ),
               ),

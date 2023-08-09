@@ -38,6 +38,12 @@ dependencies:
   go_router: ^9.0.3
   curved_labeled_navigation_bar: ^2.0.2
   flutter_svg: ^2.0.7
+  calendar_date_picker2: ^0.5.2
+  sqflite: ^2.2.8+4
+  path: ^1.8.3
+  path_provider: ^2.0.15
+  intl: ^0.18.1
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:

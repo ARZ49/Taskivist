@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taskivist/custom_app_bar.dart';
 
+import '../controller/database.dart';
 import '../task_container.dart';
 
-class CompletedTaskScreen extends StatelessWidget {
+class CompletedTaskScreen extends StatefulWidget {
   const CompletedTaskScreen({super.key});
 
+  @override
+  State<CompletedTaskScreen> createState() => _CompletedTaskScreenState();
+}
+
+class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
+  final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(slivers: [
-        const CustomAppBar(),
+        CustomAppBar(
+          searchController: searchController,
+          onSubmitted: (value){
+             setState(() {
+              searchController.text = value;
+            });
+          },
+        ),
          SliverList(
                 delegate: SliverChildListDelegate([
               const SizedBox(
@@ -36,11 +51,51 @@ class CompletedTaskScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const TaskContainer(isCompleted: true,),
-              const TaskContainer(isCompleted: true,),
-              const TaskContainer(isCompleted: true,),
-              const TaskContainer(isCompleted: true,),
-              const TaskContainer(isCompleted: true,),
+                   StreamBuilder(
+                  stream: DataBaseHelper().getAllTasks().asStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Container(
+                          margin: const EdgeInsets.only(top: 35),
+                          child: Column(
+                            children: [
+                              Center(
+                                  child: Image.asset(
+                                'assets/images/empty_task.png',
+                              )),
+                              Text(
+                                'There are no task yet',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              )
+                            ],
+                          ));
+                    }
+                    return Column(
+                            children:
+                                List.generate(snapshot.data!.length, (index) {
+                            return TaskContainer(
+                              isCompleted: true,
+                              onLongPress: () {
+                                DataBaseHelper()
+                                    .deleteUser(snapshot.data![index]['id']);
+                                setState(() {});
+                                GoRouter.of(context).pop();
+                              },
+                              title: snapshot.data![index]['title'],
+                              description: snapshot.data![index]['description'],
+                              date: snapshot.data![index]['date'],
+                              onTap: () => context.go(
+                                '/task-detail-screen',
+                                extra: snapshot.data![index],
+                              ),
+                            );
+                          }));
+                  }),
               const SizedBox(height: 5,),
             ]))
       ]),
