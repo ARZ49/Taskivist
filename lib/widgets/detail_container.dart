@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'utilities/app_colors.dart';
+import '../utilities/app_colors.dart';
 
 class DetailContainer extends StatelessWidget {
   const DetailContainer({super.key, required this.description});

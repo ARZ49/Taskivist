@@ -6,14 +6,14 @@ import 'package:taskivist/utilities/app_colors.dart';
 class TaskContainer extends StatelessWidget {
   const TaskContainer({
     super.key,
-    this.isCompleted = false,
+    this.isCompleted = 'false',
     required this.onTap,
     required this.title,
     required this.description,
     required this.date,
     required this.onLongPress,
   });
-  final bool isCompleted;
+  final String isCompleted;
   final VoidCallback onTap;
   final String title;
   final String description;
@@ -87,8 +87,16 @@ class TaskContainer extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment:MainAxisAlignment.spaceBetween,
-              children: [
-                isCompleted
+              children: [SizedBox(
+                      width: 250,
+                      child: Text(
+                          // 'Project Due',
+                          title,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                    ),
+                       isCompleted == 'True'
                     ? Row(
                         children: [
                           Padding(
@@ -98,28 +106,7 @@ class TaskContainer extends StatelessWidget {
                               height: 25,
                               width: 25,
                             ),
-                          ),
-                          SizedBox(
-                            width: 150,
-                            child: Text(
-                              // 'Project Due',
-                              title,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                          
-                            ),
-                          ),
-                        ],
-                      )
-                    : SizedBox(
-                      width: 250,
-                      child: Text(
-                          // 'Project Due',
-                          title,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                    ),
+                          )]):
                 Text(
                   // 'Date: 10/7/2023',
                   date,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:taskivist/custom_app_bar.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:taskivist/widgets/custom_app_bar.dart';
 
 import '../controller/database.dart';
-import '../task_container.dart';
+import '../widgets/task_container.dart';
 
 class CompletedTaskScreen extends StatefulWidget {
   const CompletedTaskScreen({super.key});
@@ -15,6 +16,11 @@ class CompletedTaskScreen extends StatefulWidget {
 
 class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
   final TextEditingController searchController = TextEditingController();
+  Future completedTask()async{
+   final task = await DataBaseHelper().getAllTasks();
+ final completedTask =  task.where((element) => element['isCompleted'] == 'True').toList();
+   return completedTask;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +58,7 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
                 ),
               ),
                    StreamBuilder(
-                  stream: DataBaseHelper().getAllTasks().asStream(),
+                  stream: completedTask().asStream(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -79,7 +85,7 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
                             children:
                                 List.generate(snapshot.data!.length, (index) {
                             return TaskContainer(
-                              isCompleted: true,
+                              isCompleted: snapshot.data![index]['isCompleted'],
                               onLongPress: () {
                                 DataBaseHelper()
                                     .deleteUser(snapshot.data![index]['id']);

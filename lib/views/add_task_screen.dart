@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:taskivist/controller/database.dart';
-import 'package:taskivist/custom_button.dart';
-import 'package:taskivist/custom_calender.dart';
+import 'package:taskivist/widgets/custom_button.dart';
+import 'package:taskivist/widgets/custom_calender.dart';
 import 'package:taskivist/models/Task.dart';
 import 'package:taskivist/utilities/app_colors.dart';
+
+import '../widgets/custom_field.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -84,45 +86,24 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                style: Theme.of(context).textTheme.bodySmall,
-                controller: titleEditingController,
-                decoration: InputDecoration(
-              
-                    hintText: 'Enter title',
-                    hintStyle: Theme.of(context).textTheme.bodyMedium,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none),
-                    fillColor: AppColors.secondaryColor,
-                    filled: true),
-              ),
+            CustomField(
+              controller: titleEditingController,
+              hintText: 'Enter title',
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                maxLines: 4,
-                style: Theme.of(context).textTheme.bodySmall,
-                controller: descriptionEditingController,
-                decoration: InputDecoration(
-                    hintText: 'Enter description',
-                    hintStyle: Theme.of(context).textTheme.bodyMedium,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none),
-                    fillColor: AppColors.secondaryColor,
-                    filled: true),
-              ),
-            ),
+           CustomField(
+            controller: descriptionEditingController,
+            hintText: 'Enter description',
+            maxLines: 4,
+           ),
+           
             CustomButton(
               onPressed: () {
-                DataBaseHelper().saveTask(Task(
+        DataBaseHelper().saveTask(Task(
                     title: titleEditingController.text,
                     description: descriptionEditingController.text,
                     date: DateFormat.yMMMd().format(dates.first!)));
                 context.go('/main-page');
+                 
               },
             )
           ]),

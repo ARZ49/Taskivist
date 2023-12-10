@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taskivist/utilities/app_colors.dart';
 import 'package:taskivist/views/completed_task_screen.dart';
+import 'package:taskivist/views/pending_task_screen.dart';
 import 'package:taskivist/views/task_screen.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,10 +15,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int bottomNavIndex = 0;
+  int bottomNavIndex = 1;
   List screens = [
-    // const PendingTaskScreen(),
-    const TaskScreen(),
+    const PendingTaskScreen(),
+    TaskScreen(),
     const CompletedTaskScreen(),
   ];
   @override
@@ -32,13 +33,13 @@ class _MainPageState extends State<MainPage> {
           animationDuration: const Duration(milliseconds: 600),
           letIndexChange: (index) => true,
           items: [
-            // CurvedNavigationBarItem(
-            //   child: SvgPicture.asset(
-            //     'assets/icons/pending.svg',
-            //     height: 40,
-            //     width: 40,
-            //   ),
-            // ),
+            CurvedNavigationBarItem(
+              child: SvgPicture.asset(
+                'assets/icons/pending.svg',
+                height: 40,
+                width: 40,
+              ),
+            ),
             CurvedNavigationBarItem(
               child: SvgPicture.asset(
                 'assets/icons/view_all.svg',

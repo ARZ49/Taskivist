@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:taskivist/custom_app_bar.dart';
+import 'package:taskivist/widgets/custom_app_bar.dart';
 import 'package:taskivist/utilities/app_colors.dart';
 
 import '../controller/database.dart';
-import '../task_container.dart';
+import '../widgets/task_container.dart';
 
 class PendingTaskScreen extends StatefulWidget {
   const PendingTaskScreen({super.key});
@@ -16,6 +16,11 @@ class PendingTaskScreen extends StatefulWidget {
 
 class _PendingTaskScreenState extends State<PendingTaskScreen> {
   final TextEditingController searchController = TextEditingController();
+   Future pendingTask()async{
+   final task = await DataBaseHelper().getAllTasks();
+ final completedTask =  task.where((element) => element['isCompleted'] == 'False').toList();
+   return completedTask;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +56,7 @@ class _PendingTaskScreenState extends State<PendingTaskScreen> {
                 ),
               ),
                   StreamBuilder(
-                  stream:  DataBaseHelper().getAllTasks().asStream(),
+                  stream:  pendingTask().asStream(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(

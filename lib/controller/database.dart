@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:taskivist/models/Task.dart';
 import 'package:get/get.dart';
-class DataBaseHelper extends GetxController{
+
+class DataBaseHelper extends GetxController {
   static final DataBaseHelper _instance = DataBaseHelper.internal();
   factory DataBaseHelper() => _instance;
   final String tableTask = 'taskTable';
@@ -13,6 +13,7 @@ class DataBaseHelper extends GetxController{
   final String columnTitle = 'title';
   final String columnDescription = 'description';
   final String columnDate = 'date';
+  final String isCompleted = 'isCompleted';
   static Database? _db;
   Future<Database> get db async {
     if (_db != null) {
@@ -31,8 +32,14 @@ class DataBaseHelper extends GetxController{
 
   void _onCreate(Database db, int version) async {
     await db.execute(
-      'CREATE TABLE $tableTask($columnId INTEGER PRIMARY KEY, $columnTitle TEXT, $columnDescription TEXT, $columnDate TEXT)',
+      'CREATE TABLE $tableTask($columnId INTEGER PRIMARY KEY, $columnTitle TEXT, $columnDescription TEXT, $columnDate TEXT, $isCompleted TEXT)',
     );
+  }
+
+  Future<bool> checkIfDatabaseExists() async {
+    Directory appDir = await getApplicationDocumentsDirectory();
+    final path = join(appDir.path, 'maindb.db');
+    return File(path).exists();
   }
 
   Future<int> saveTask(Task task) async {
@@ -41,7 +48,7 @@ class DataBaseHelper extends GetxController{
     return res;
   }
 
-   Future<List> getAllTasks() async {
+  Future<List> getAllTasks() async {
     var dbClient = await db;
     var results = await dbClient.rawQuery('SELECT * FROM $tableTask');
     return results;
@@ -55,8 +62,8 @@ class DataBaseHelper extends GetxController{
 
   Future<Task> getTask(int id) async {
     var dbClient = await db;
-    var result =
-        await dbClient.rawQuery('SELECT * FROM $tableTask WHERE $columnId = $id');
+    var result = await dbClient
+        .rawQuery('SELECT * FROM $tableTask WHERE $columnId = $id');
     return Task.fromMap(result.first);
   }
 
@@ -67,24 +74,39 @@ class DataBaseHelper extends GetxController{
     return result;
   }
 
-  Future<int> updateTask(int id,Task task) async {
+  Future<int> updateTask(int id, Task task) async {
     var dbClient = await db;
     var result = await dbClient.update(tableTask, task.toMap(),
         where: '$columnId = ?', whereArgs: [id]);
     return result;
   }
-  Future<List> sortByLastest()async{
+
+  Future<List> sortByLastest() async {
     var dbClient = await db;
-    var result = await dbClient.rawQuery("SELECT * FROM $tableTask ORDER BY $columnDate ASC");
-    return result;
-  }
-   Future<List> sortByOldest()async{
-    var dbClient = await db;
-    var result = await dbClient.rawQuery("SELECT * FROM $tableTask ORDER BY $columnDate DESC");
+    var result = await dbClient
+        .rawQuery("SELECT * FROM $tableTask ORDER BY $columnDate ASC");
     return result;
   }
 
- Future close() async {
+  Future<List> sortByOldest() async {
+    var dbClient = await db;
+    var result = await dbClient
+        .rawQuery("SELECT * FROM $tableTask ORDER BY $columnDate DESC");
+    // print(date);
+    return result;
+  }
+
+  // Future<List<Map<String,dynamic>>> getOrderedList()async{
+  //   var dbClient = await db;
+  //   final dateList = await getAllTasks();
+  //  final date = dateList.map((map) => map['date']).toList();
+  //  final dateString = date.map((date) => "'$date").toList().join(',');
+  //   List<Map<String,dynamic>> result = await dbClient.rawQuery("SELECT * FROM $tableTask ORDER BY CASE $columnDate  $dateString ELSE 1 END");
+  //   print(result);
+  //   return result;
+  // }
+
+  Future close() async {
     var dbClient = await db;
     return dbClient.close();
   }

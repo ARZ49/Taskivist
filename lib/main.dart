@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:taskivist/controller/controller.dart';
 import 'package:taskivist/utilities/app_colors.dart';
 import 'package:taskivist/views/add_task_screen.dart';
 import 'package:taskivist/views/main_screen.dart';
+import 'package:taskivist/views/start_screen.dart';
 import 'package:taskivist/views/task_detail_screen.dart';
 
-import 'views/start_screen.dart';
+import 'controller/database.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
-  MaterialApp.router(
+    ChangeNotifierProvider(
+      create: (context) => Controller(),
+      child: MaterialApp.router(
         routerConfig: _router,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -36,6 +42,7 @@ void main() {
               color: Colors.white),
         )),
       ),
+    ),
   );
 }
 
@@ -44,7 +51,18 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const StartPage();
+        return FutureBuilder<bool>(
+            future: DataBaseHelper().checkIfDatabaseExists(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data == true) {
+                  return MainPage();
+                } else {
+                  return const StartPage();
+                }
+              }
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            });
       },
     ),
     GoRoute(
