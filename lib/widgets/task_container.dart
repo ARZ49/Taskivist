@@ -37,26 +37,26 @@ class TaskContainer extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(200, 45),
+                            backgroundColor: AppColors.secondaryColor),
                         child: Text(
                           'Edit',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(200, 45),
-                            backgroundColor: AppColors.secondaryColor),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       ElevatedButton(
                         onPressed: onLongPress,
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(200, 45),
+                            backgroundColor: AppColors.secondaryColor),
                         child: Text(
                           'Delete',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(200, 45),
-                            backgroundColor: AppColors.secondaryColor),
                       ),
                     ],
                   ),
@@ -88,7 +88,7 @@ class TaskContainer extends StatelessWidget {
             Row(
               mainAxisAlignment:MainAxisAlignment.spaceBetween,
               children: [SizedBox(
-                      width: 250,
+                      width: 230,
                       child: Text(
                           // 'Project Due',
                           title,

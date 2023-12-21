@@ -5,7 +5,7 @@ import 'package:taskivist/controller/controller.dart';
 // ignore: must_be_immutable
 class TaskHeader extends StatefulWidget {
   final List items;
-  TaskHeader({
+  const TaskHeader({
     super.key,
     required this.items,
    
@@ -19,34 +19,40 @@ class _TaskHeaderState extends State<TaskHeader> {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<Controller>(context);
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
             'Task List',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.solid,
                 decorationThickness: 2),
           ),
-          PopupMenuButton(
+        ),
+       
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: PopupMenuButton(
               icon: SvgPicture.asset(
                 'assets/icons/filter.svg',
                 height: 30,
               ),
               onSelected: (value){
+                
                 controller.sortBy(value);
+                
               },
               itemBuilder: (context) => widget.items.map((e) {
                     return PopupMenuItem(
-                      child: Text(e),
                       value: e,
+                      child: Text(e),
                     );
                   }).toList()),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

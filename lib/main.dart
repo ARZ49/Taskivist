@@ -5,6 +5,7 @@ import 'package:taskivist/controller/controller.dart';
 import 'package:taskivist/utilities/app_colors.dart';
 import 'package:taskivist/views/add_task_screen.dart';
 import 'package:taskivist/views/main_screen.dart';
+import 'package:taskivist/views/pending_task_screen.dart';
 import 'package:taskivist/views/start_screen.dart';
 import 'package:taskivist/views/task_detail_screen.dart';
 
@@ -56,12 +57,12 @@ final GoRouter _router = GoRouter(
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data == true) {
-                  return MainPage();
+                  return const MainPage();
                 } else {
                   return const StartPage();
                 }
               }
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
+              return const Scaffold(body: Center(child: CircularProgressIndicator()));
             });
       },
     ),
@@ -83,6 +84,12 @@ final GoRouter _router = GoRouter(
       path: '/Add-Task-Screen',
       builder: (BuildContext context, GoRouterState state) {
         return const AddTaskScreen();
+      },
+    ),
+      GoRoute(
+      path: '/Pending-Page',
+      builder: (BuildContext context, GoRouterState state) {
+        return const PendingTaskScreen();
       },
     ),
   ],

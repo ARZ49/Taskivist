@@ -42,15 +42,18 @@ class StartPage extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
-                const SizedBox(
-                  width: 355,
-                  child: Text(
-                    '“Not only should you have a to-do list, but it must become your best friend.” — Jim Kwik"',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: AppColors.secondaryColor,
-                        fontWeight: FontWeight.w400),
-                    maxLines: 3,
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 355,
+                    child: Text(
+                      '“Not only should you have a to-do list,\n but it must become your best \n friend.” — Jim Kwik"',
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: AppColors.secondaryColor,
+                          fontWeight: FontWeight.w400),
+                      maxLines: 3,
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -69,7 +72,7 @@ class StartPage extends StatelessWidget {
                   child: const Text(
                     "Let's Get Started",
                     style: TextStyle(
-                        color: AppColors.accentColor,
+                        color: AppColors.backgroundColor,
                         fontSize: 20,
                         fontWeight: FontWeight.w500),
                   ),

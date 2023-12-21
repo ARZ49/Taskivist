@@ -18,7 +18,7 @@ class _MainPageState extends State<MainPage> {
   int bottomNavIndex = 1;
   List screens = [
     const PendingTaskScreen(),
-    TaskScreen(),
+    const TaskScreen(),
     const CompletedTaskScreen(),
   ];
   @override

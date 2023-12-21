@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:taskivist/widgets/custom_app_bar.dart';
 
 import '../controller/database.dart';

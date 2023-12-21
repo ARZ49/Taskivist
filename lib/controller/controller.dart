@@ -13,15 +13,15 @@ class Controller extends ChangeNotifier {
     isLoading = true;
     if (value == 'Sort by Recent') {
       isLoading = true;
-      await DataBaseHelper().sortByLastest();
-      sorted = SortBy.recent;
-    } else {
-      // await DataBaseHelper().getOrderedList();
       await DataBaseHelper().sortByOldest();
-      sorted = SortBy.oldest;
-    }
 
-    await Future.delayed(Duration(seconds: 2));
+      sorted = SortBy.recent;
+      notifyListeners();
+    } else {
+      await DataBaseHelper().sortByLastest();
+      sorted = SortBy.oldest;
+      notifyListeners();
+    }
     isLoading = false;
     notifyListeners();
   }

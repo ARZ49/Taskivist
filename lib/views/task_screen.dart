@@ -72,6 +72,7 @@ class _TaskScreenState extends State<TaskScreen> {
                               ? DataBaseHelper().sortByOldest().asStream()
                               : DataBaseHelper().getAllTasks().asStream(),
                   builder: (context, snapshot) {
+                   
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -100,13 +101,14 @@ class _TaskScreenState extends State<TaskScreen> {
                         : Column(
                             children:
                                 List.generate(snapshot.data!.length, (index) {
+                                 
                             return Dismissible(
-                              key: Key('key'),
+                              key: Key(snapshot.data![index]['id'].toString()),
                              direction: DismissDirection.endToStart,
-                              background: Align(
+                              background: const Align(
                                 alignment: Alignment.centerRight,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                                  padding: EdgeInsets.all(15.0),
                                   child: Icon(Icons.delete,color: AppColors.primaryColor,size: 30,),
                                 )),
                               confirmDismiss: (direction) {
@@ -116,14 +118,14 @@ class _TaskScreenState extends State<TaskScreen> {
                                       return AlertDialog(
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                         backgroundColor: AppColors.primaryColor,
-                                        content: Text(
-                                            'Are you sure you want to delete this?',style: TextStyle(color: AppColors.secondaryColor,fontSize: 18),),
+                                        content: const Text(
+                                            'Are you sure you want to delete this?',style: TextStyle(color: AppColors.accentColor,fontSize: 20),),
                                         actions: [
                                           TextButton(
                                               onPressed: () {
                                                    GoRouter.of(context).pop();
                                               },
-                                              child: Text("Close")),
+                                              child: const Text("Close",style: TextStyle(color: AppColors.accentColor,fontSize: 18),)),
                                           TextButton(
                                               onPressed: () {
                                                 DataBaseHelper().deleteUser(
@@ -132,39 +134,14 @@ class _TaskScreenState extends State<TaskScreen> {
                                                 setState(() {});
                                                 GoRouter.of(context).pop();
                                               },
-                                              child: Text('Delete'))
+                                              child: const Text('Delete',style: TextStyle(color: AppColors.accentColor,fontSize: 18)))
                                         ],
                                       );
                                     });
                               },
-                              // onDismissed: (direction) {
-                              //   showDialog(
-                              //       context: context,
-                              //       builder: (context) {
-                              //         return AlertDialog(
-                              //           content: Text(
-                              //               'Are you sure you want to delete this?'),
-                              //           actions: [
-                              //             TextButton(
-                              //                 onPressed: () {
-                              //                      GoRouter.of(context).pop();
-                              //                 },
-                              //                 child: Text("Close")),
-                              //             TextButton(
-                              //                 onPressed: () {
-                              //                   DataBaseHelper().deleteUser(
-                              //                       snapshot.data![index]
-                              //                           ['id']);
-                              //                   setState(() {});
-                              //                   GoRouter.of(context).pop();
-                              //                 },
-                              //                 child: Text('Delete'))
-                              //           ],
-                              //         );
-
-                              //       });
-                              // },
+                          
                               child: TaskContainer(
+                                isCompleted: snapshot.data![index]['isCompleted'] == 'True'?'True':'False',
                                 onLongPress: () {
                                   DataBaseHelper()
                                       .deleteUser(snapshot.data![index]['id']);

@@ -56,19 +56,106 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           context.go('/main-page');
                         },
                       ),
-                      IconButton(onPressed: (){
-                         DataBaseHelper().updateTask(
-                            widget.snapshot['id'],
-                            Task(
-                                isCompleted: 'True',
-                                title:  widget.snapshot['title'],
-                                description: widget.snapshot['description'],
-                                date: widget.snapshot['date']));
-                        titleEditingController.clear();
-                        descriptionEditingController.clear();
-                      
-                        setState(() {});
-                      }, icon: Icon(Icons.check,size: 32,color: AppColors.secondaryColor,)
+                      // widget.snapshot['isCompleted'] == 'True'?Container() :
+                      PopupMenuButton(
+                        iconSize: 30,
+                        color: AppColors.secondaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                                value: 0,
+                                onTap: () {
+                                  DataBaseHelper().updateTask(
+                                      widget.snapshot['id'],
+                                      Task(
+                                          isCompleted:
+                                              widget.snapshot['isCompleted'] ==
+                                                      'True'
+                                                  ? 'False'
+                                                  : 'True',
+                                          title: widget.snapshot['title'],
+                                          description:
+                                              widget.snapshot['description'],
+                                          date: widget.snapshot['date']));
+                                  titleEditingController.clear();
+                                  descriptionEditingController.clear();
+                              
+                                     setState(() {});
+                                     context.replace(
+                                      '/main-page',
+                                     );
+                                      
+                                },
+                                child: Text(
+                                  widget.snapshot['isCompleted'] == 'True'
+                                      ? 'Unmark as Completed'
+                                      : 'Mark as Complete',
+                                  style: const TextStyle(
+                                      color: AppColors.accentColor,
+                                      fontSize: 18),
+                                )),
+                            PopupMenuItem(
+                                value: 1,
+                                onTap: () {
+                                  Future.delayed(Duration.zero).then((value) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            backgroundColor:
+                                                AppColors.secondaryColor,
+                                            content: const Text(
+                                              'Are you sure you want to delete this?',
+                                              style: TextStyle(
+                                                  color: AppColors.accentColor,
+                                                  fontSize: 20),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  style: TextButton.styleFrom(
+                                                      foregroundColor: AppColors
+                                                          .accentColor),
+                                                  onPressed: () {
+                                                    GoRouter.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                    "Close",
+                                                    style:
+                                                        TextStyle(fontSize: 18),
+                                                  )),
+                                              TextButton(
+                                                  style: TextButton.styleFrom(
+                                                      foregroundColor: AppColors
+                                                          .accentColor),
+                                                  onPressed: () {
+                                                    DataBaseHelper().deleteUser(
+                                                        widget.snapshot['id']);
+                                                    setState(() {});
+                                                    GoRouter.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                    'Delete',
+                                                    style:
+                                                        TextStyle(fontSize: 18),
+                                                  ))
+                                            ],
+                                          );
+                                        });
+                                  });
+                                },
+                                child: const Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                      color: AppColors.accentColor,
+                                      fontSize: 18),
+                                )),
+                          ];
+                        },
                       )
                     ],
                   ),

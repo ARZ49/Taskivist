@@ -7,7 +7,7 @@ class CustomField extends StatelessWidget{
   final String hintText;
   final int maxLines;
 
-  CustomField({required this.controller,required this.hintText,this.maxLines = 1});
+  const CustomField({super.key, required this.controller,required this.hintText,this.maxLines = 1});
   @override
   Widget build(BuildContext context){
     return    Padding(
